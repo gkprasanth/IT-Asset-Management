@@ -1,0 +1,73 @@
+Home-
+asset alloc -> allocation page
+asset recovery -> Recovery Page
+reports
+
+
+
+allocation page-
+	Ticket Number - TB
+	It Asset Type - laptop/desktop/other - Dropdwon
+  Service Tag - Input
+  Asset Code - should be dispalyed after entering service tag
+	Emp Id - Auto Complete from emp table
+	Date - Allocation date
+	State - Issued [Instore / allocated] same as asset code
+Submit -> allocate asset with alloc date in allocation table 
+
+
+asset Rec -
+	Ticket Number
+	Service Tag - input
+		then display
+			asset code
+			emp id
+			date returned
+	delete this emp id from asset tabel
+	asset state - in store
+
+
+
+
+
+
+
+
+
+model emp_data {
+  id            Int    @id @default(autoincrement())
+  employee_code Int    @unique
+  employee_name String @db.VarChar(191)
+  lob           String @db.VarChar(191)
+  designation   String @db.VarChar(100)
+  manager_code  Int
+  manager_name  String @db.VarChar(191)
+  hod_name      String @db.VarChar(191)
+  mobile_number Int
+  email         String @db.VarChar(191)
+  asset_owned   it_assets[]
+}
+
+model it_assets {
+  id             Int      @id @default(autoincrement())
+  asset_type     String   @db.VarChar(191)
+  asset_owner    String   @db.VarChar(191)
+  service_tag    String   @unique @db.VarChar(191)
+  model          String   @db.VarChar(191)
+  asset_code     String   @db.VarChar(191)
+  asset_make     String   @db.VarChar(191)
+  asset_state    String   @db.VarChar(100)
+  purchased_date DateTime
+  date_issued    DateTime
+  date_returned  DateTime
+  emp_id         Int
+  po_number      Int
+  asset_location String   @db.VarChar(100)
+  branch_code    Int
+}
+
+
+
+
+
+allocation table

@@ -1,0 +1,21 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: assetmanagement
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Prasanth@123$
+    ports:
+      - "5432:5432"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgres://postgres:Prasanth@123$@postgres:5432/assetmanagement
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
