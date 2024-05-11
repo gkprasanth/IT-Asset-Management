@@ -2,9 +2,6 @@ import express from "express";
 import "dotenv/config";
 import cors from 'cors'
 
-
-
-
 const sampleData =[
     {
     
@@ -347,9 +344,6 @@ const sampleData =[
       "branch_code": 2
     }
   ]
-  
-
-
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -360,9 +354,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
-app.get("/", (req, res) => {
-
-
+app.get("/api", (req, res) => {
     res.send("Hello World");
 });
 

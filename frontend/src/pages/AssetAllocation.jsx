@@ -7,7 +7,7 @@ const TicketForm = () => {
   const [state, setState] = useState('');
   const [empId, setEmpId] = useState('');
   const [empSuggestions, setEmpSuggestions] = useState([]);
-  const [selectedEmp, setSelectedEmp] = useState('')
+  const [selectedEmp, setSelectedEmp] = useState(0)
   const [code, setCode] = useState(null);
   const [formData, setFormData] = useState({
     TicketNumber: '',
@@ -15,7 +15,7 @@ const TicketForm = () => {
     ServiceTag: '',
     AssetCode: code,
     EmployeeId: selectedEmp,
-    AllocationDate: null,
+    AllocationDate: ' ',
   });
 
 
@@ -49,6 +49,20 @@ const TicketForm = () => {
     try {
       console.log(formData);
       // Add axios POST request here
+      try {
+        async function allocateAsset() {
+          const response = await axios.put('http://localhost:4000/api/asset/allocateasset', {
+            service_tag: formData.ServiceTag,
+            emp_id: formData.EmployeeId,
+            date_issued: formData.AllocationDate
+          })
+          console.log(response)
+        }
+
+        allocateAsset()
+      } catch (err) {
+        console.log(err)
+      }
     } catch (err) {
       console.log(err);
     }
@@ -73,9 +87,11 @@ const TicketForm = () => {
       ...prevState,
       AssetCode: code,
       EmployeeId: selectedEmp
+      
     }));
   }, [code, selectedEmp]);
   const [optionSelected, setOptionSelected] = useState(false);
+  const [date, setDate] = useState(null)
 
   const handleEmpSelection = (selectedEmp) => {
     setSelectedEmp(selectedEmp);
@@ -116,12 +132,12 @@ const TicketForm = () => {
             <select
               value={formData.AssetType}
               name="AssetType"
-              onChange={(e)=>{
-                setFormData({...formData, AssetType: e.target.value});
+              onChange={(e) => {
+                setFormData({ ...formData, AssetType: e.target.value });
               }}
               className='appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
             >
-              
+
               <option value="Laptop">Laptop</option>
               <option value="Desktop">Desktop</option>
               <option value="Other">Other</option>
@@ -132,22 +148,22 @@ const TicketForm = () => {
               Service Tag
             </label>
             <div className='flex items-center gap-2' >
-            <input
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="serviceTag"
-              name="ServiceTag"
-              type="text"
-              placeholder="Enter Service Tag"
-              value={formData.ServiceTag}
-              onChange={handleChange}
-            />
-            <FaSearch className='cursor-pointer ' onClick={handleStatus} size={25}     />
+              <input
+                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="serviceTag"
+                name="ServiceTag"
+                type="text"
+                placeholder="Enter Service Tag"
+                value={formData.ServiceTag}
+                onChange={handleChange}
+              />
+              <FaSearch className='cursor-pointer ' onClick={handleStatus} size={25} />
             </div>
-            {state && <div  className='flex gap-1' >
+            {state && <div className='flex gap-1' >
               <span className='font-bold' >Asset State:</span><p style={{
-              color: state != "In store" ? "red" : "green"
-            }} > {state}</p>
-            
+                color: state != "In store" ? "red" : "green"
+              }} > {state}</p>
+
             </div>}
           </div>
           <div className="mb-4">
@@ -215,9 +231,9 @@ const TicketForm = () => {
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
-              disabled={state!="In store"}
+              disabled={state != "In store"}
               style={{
-                backgroundColor: state!="In store" && 'grey'
+                backgroundColor: state != "In store" && 'grey'
               }}
             >
               Submit

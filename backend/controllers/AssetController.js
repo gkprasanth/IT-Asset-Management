@@ -26,8 +26,8 @@ class AssetController {
                     service_tag: asset_data.service_tag
                 },
                 data: {
-                    emp_id: asset_data.emp_id,
-                    date_issued: new Date(), // Use new Date() to get the current date and time
+                    emp_id: parseInt(asset_data.emp_id),
+                    date_issued: new Date(asset_data.date_issued), // Use new Date() to get the current date and time
                     asset_state: "In Use"
                 }
             })
